@@ -1,16 +1,110 @@
 # email_verification_without_firebase
 
-A new Flutter project.
+// Add Package
+email_otp: ^1.0.4
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+// Import 
+import 'package:email_otp/email_otp.dart';
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+// Create Object
+EmailOTP myauth = EmailOTP();
+
+
+
+
+// Creating Text Fields.
+  TextEditingController email = new TextEditingController();
+  TextEditingController otp = new TextEditingController();
+
+
+
+// Configure Object
+myauth.setConfig(
+                            appEmail: "me@rohitchouhan.com",
+                            appName: "Email OTP",
+                            userEmail: email.text,
+                            otpLength: 6,
+                            otpType: OTPType.digitsOnly
+                          );
+
+
+
+// Check OTP has sent or not.
+ if (await myauth.sendOTP() == true) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("OTP has been sent"),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Oops, OTP send failed"),
+                            ));
+                          }
+
+
+
+
+// Complete send OTP Button Code
+ElevatedButton(
+                        onPressed: () async {
+                          myauth.setConfig(
+                            appEmail: "me@rohitchouhan.com",
+                            appName: "Email OTP",
+                            userEmail: email.text,
+                            otpLength: 6,
+                            otpType: OTPType.digitsOnly
+                          );
+                          if (await myauth.sendOTP() == true) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("OTP has been sent"),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Oops, OTP send failed"),
+                            ));
+                          }
+                        },
+                        child: const Text("Send OTP")),
+
+
+
+
+// Check OTP verified or not
+if (await myauth.verifyOTP(otp: otp.text) == true) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("OTP is verified"),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Invalid OTP"),
+                            ));
+                          }
+
+
+
+
+// Complete OTP Verification button Code
+ElevatedButton(
+                        onPressed: () async {
+                          if (await myauth.verifyOTP(otp: otp.text) == true) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("OTP is verified"),
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Invalid OTP"),
+                            ));
+                          }
+                        },
+                        child: const Text("Verify")),
+
